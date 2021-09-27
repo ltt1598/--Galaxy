@@ -9,10 +9,11 @@
 ├── data
 │   └── galaxy.gif
 ├── images
-├── celestial_objects.py
-├── galaxy.py
+├── .gitignore
 ├── README.md
 ├── LICENSE
+├── celestial_objects.py
+├── galaxy.py
 └── requirements.txt
 ```
 
