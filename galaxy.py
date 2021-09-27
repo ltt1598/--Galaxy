@@ -17,7 +17,7 @@ if __name__ == "__main__":
 
     # GUI
     my_gui = ti.GUI("Galaxy", (800, 800))
-    h = 5e-5
+    h = 5e-5 # time-step size
     i = 0
     while my_gui.running:
 
@@ -30,6 +30,7 @@ if __name__ == "__main__":
             elif e.key == 'r':
                 stars.initialize(0.5, 0.5, 0.2, 10)
                 planets.initialize(0.5, 0.5, 0.4, 10)
+                i = 0
             elif e.key == 'i':
                 export_images = not export_images
 
