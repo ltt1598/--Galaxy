@@ -18,6 +18,18 @@ class CelestialObject:
         gui.circles(self.pos.to_numpy(), radius=radius, color=color)
 
     @ti.func
+    def Pos(self):
+        return self.pos
+
+    @ti.func
+    def Mass(self):
+        return self.m
+
+    @ti.func
+    def Number(self):
+        return self.n
+
+    @ti.func
     def clearForce(self):
         for i in self.force:
             self.force[i] = ti.Vector([0.0, 0.0])
@@ -44,23 +56,13 @@ class CelestialObject:
                 if j != i:
                     diff = self.pos[j] - p
                     r = diff.norm(1e-2)
-                    self.force[i] += self.G * self.m * self.m * diff / r**3
+                    self.force[i] += self.G * self.Mass() * self.Mass() * diff / r**3
 
     @ti.kernel
     def update(self, h: ti.f32):
         for i in self.vel:
-            self.vel[i] += h * self.force[i] / self.m
+            self.vel[i] += h * self.force[i] / self.Mass()
             self.pos[i] += h * self.vel[i]
-
-    def Pos(self):
-        return self.pos
-
-    def Mass(self):
-        return self.m
-
-    def Number(self):
-        return self.n
-
 
 @ti.data_oriented
 class Star(CelestialObject):
@@ -100,9 +102,9 @@ class Planet(CelestialObject):
                 if i != j:
                     diff = self.pos[j] - p
                     r = diff.norm(1e-2)
-                    self.force[i] += G * self.m * self.m * diff / r**3
+                    self.force[i] += G * self.Mass() * self.Mass() * diff / r**3
 
             for j in range(stars.Number()):
                 diff = stars.Pos()[j] - p
                 r = diff.norm(1e-2)
-                self.force[i] += G * self.m * stars.Mass() * diff / r**3
+                self.force[i] += G * self.Mass() * stars.Mass() * diff / r**3

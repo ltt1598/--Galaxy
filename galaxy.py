@@ -11,6 +11,7 @@ if __name__ == "__main__":
 
     # stars and planets
     stars = Star(N=2, mass=1000)
+    
     stars.initialize(0.5, 0.5, 0.2, 10)
     planets = Planet(N=1000, mass=1)
     planets.initialize(0.5, 0.5, 0.4, 10)
