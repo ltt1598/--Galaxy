@@ -8,11 +8,12 @@
 ```
 ├── data
 │   └── galaxy.gif
-├── requirements.txt
-├── LICENSE
-├── README.md
+├── images
 ├── celestial_objects.py
-└── galaxy.py
+├── galaxy.py
+├── README.md
+├── LICENSE
+└── requirements.txt
 ```
 
 ## 运行方式
@@ -22,11 +23,10 @@
 [Taichi] version 0.8.0, llvm 10.0.0, commit 181c9039, win, python 3.8.10
 ```
 
-确保`celestial_objects.py` 和`galaxy.py` 在相同的路径下
-
-直接运行:  `python3 galaxy.py`
+确保`celestial_objects.py` 和`galaxy.py` 在相同的路径下，直接运行:  `python3 galaxy.py`
 
 按键
 
 - `Space` : 暂停/继续
+- `i` : 运行时导出图片/停止导出（导出的图片会存放在./images/目录下）
 - `r` : 重置
