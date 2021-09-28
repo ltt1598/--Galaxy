@@ -1,13 +1,12 @@
 import taichi as ti
 
+# constants
+G = 1
+PI = 3.1415926
+
 @ti.data_oriented
 class CelestialObject:
     def __init__(self, N, mass) -> None:
-        # constants
-        self.G = 1
-        self.PI = 3.1415926
-
-        # celestial object related fields
         self.n = N
         self.m = mass
         self.pos = ti.Vector.field(2, ti.f32, shape=self.n)
@@ -41,7 +40,7 @@ class CelestialObject:
                 self.pos[i] = ti.Vector([center_x, center_y])
                 self.vel[i] = ti.Vector([0.0, 0.0])
             else:
-                theta, r = self.generateThetaAndR(self.PI, i, self.n)
+                theta, r = self.generateThetaAndR(i, self.n)
                 offset_dir = ti.Vector([ti.cos(theta), ti.sin(theta)])
                 center = ti.Vector([center_x, center_y])
                 self.pos[i] = center + r * offset_dir * size
@@ -56,7 +55,7 @@ class CelestialObject:
                 if j != i:
                     diff = self.pos[j] - p
                     r = diff.norm(1e-2)
-                    self.force[i] += self.G * self.Mass() * self.Mass() * diff / r**3
+                    self.force[i] += G * self.Mass() * self.Mass() * diff / r**3
 
     @ti.kernel
     def update(self, h: ti.f32):
@@ -72,11 +71,10 @@ class Star(CelestialObject):
 
     @staticmethod
     @ti.func
-    def generateThetaAndR(pi, i, n):
-        theta = 2*pi*i/ti.cast(n, ti.f32)
+    def generateThetaAndR(i, n):
+        theta = 2*PI*i/ti.cast(n, ti.f32)
         r = 1  
         return theta, r   
-
 
 @ti.data_oriented
 class Planet(CelestialObject):
@@ -86,15 +84,14 @@ class Planet(CelestialObject):
 
     @staticmethod
     @ti.func
-    def generateThetaAndR(pi,i,n):
-        theta = 2 * pi * ti.random()  # theta \in (0, 2PI)
+    def generateThetaAndR(i,n):
+        theta = 2 * PI * ti.random()  # theta \in (0, 2PI)
         r = (ti.sqrt(ti.random()) * 0.4 + 0.6)  # r \in (0.6,1)    
         return theta, r   
 
     @ti.kernel
     def computeForce(self, stars: ti.template()):
         self.clearForce()
-        G = 1.0
         for i in range(self.n):
             p = self.pos[i]
 
